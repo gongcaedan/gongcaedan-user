@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name: gongcaedan-auth
+    name: userservice
   datasource:
     url: ${DB_URL}
     username: ${DB_USERNAME}
