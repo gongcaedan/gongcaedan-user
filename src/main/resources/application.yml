@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8080
   forward-headers-strategy: framework
 
 spring:
@@ -15,23 +15,26 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
 
   data:
-     redis:
-        host: ${REDIS_URL}
-        port: 6379
+    redis:
+      host: ${REDIS_URL}
+      port: 6379
 
 jwt:
   token:
     secret: ${JWT_SECRET_BASE64}
-  access-token-expiration: 3600000      # 1
-  refresh-token-expiration: 604800000   # 7
+  access-token-expiration: 3600000      # 1시간
+  refresh-token-expiration: 604800000   # 7일
 
 eureka:
   client:
     service-url:
       defaultZone: http://eurekaserver:8761/eureka
+  instance:
+    prefer-ip-address: true
+    hostname: gongcaedan-auth
 
 management:
   endpoint:
