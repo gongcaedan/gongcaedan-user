@@ -26,6 +26,7 @@ public class GongcaedanAuthApplication {
         System.setProperty("DB_USERNAME", Objects.requireNonNull(dotenv.get("DB_USERNAME")));
         System.setProperty("DB_PASSWORD", Objects.requireNonNull(dotenv.get("DB_PASSWORD")));
         System.setProperty("JWT_TOKEN", Objects.requireNonNull(dotenv.get("JWT_TOKEN")));
+        System.setProperty("REDIS_URL", Objects.requireNonNull(dotenv.get("REDIS_URL")));
         SpringApplication.run(GongcaedanAuthApplication.class, args);
     }
 
