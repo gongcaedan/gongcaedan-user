@@ -33,8 +33,12 @@ eureka:
     service-url:
       defaultZone: http://eurekaserver:8761/eureka
   instance:
-    prefer-ip-address: true
-    hostname: gongcaedan-auth
+    prefer-ip-address: false              # IP 기반 등록 비활성화 (핵심!)
+    hostname: gongcaedan-auth             # Kubernetes Service 이름
+    instance-id: ${spring.application.name}:${server.port}
+    non-secure-port: ${server.port}
+    metadata-map:
+      instanceId: ${spring.application.name}:${server.port}
 
 management:
   endpoint:
