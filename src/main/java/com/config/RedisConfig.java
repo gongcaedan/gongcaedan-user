@@ -1,5 +1,6 @@
 package com.config;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -13,7 +14,22 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory();
+        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+        String redisUrl = dotenv.get("REDIS_URL");
+        System.out.println("Redis 연결 시도 중: " + redisUrl);
+
+        String host = "localhost";
+        int port = 6379;
+
+        if (redisUrl != null && redisUrl.startsWith("redis://")) {
+            String stripped = redisUrl.replace("redis://", "");
+            String[] parts = stripped.split(":");
+            host = parts[0];
+            port = Integer.parseInt(parts[1]);
+        }
+
+        System.out.println("실제 Redis 연결 → " + host + ":" + port);
+        return new LettuceConnectionFactory(host, port);
     }
 
     @Bean
