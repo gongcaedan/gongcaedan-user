@@ -25,13 +25,9 @@ jwt:
   refresh-token-expiration: 604800000   # 7일
 
 eureka:
-  instance:
-    prefer-ip-address: false
-    hostname: user.gongcaedan.svc.cluster.local
-    instance-id: ${spring.application.name}:${server.port}
-    non-secure-port: 8080
-    metadata-map:
-      instanceId: ${spring.application.name}:${server.port}ㄴ
+  client:
+    service-url:
+      defaultZone: http://eurekaserver:8761/eureka
 
 management:
   endpoint:
