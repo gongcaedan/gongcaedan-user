@@ -15,7 +15,8 @@ spring:
 
   data:
     redis:
-      url: ${REDIS_URL}
+      host: ${REDIS_URL}
+      port: 6379
 
 jwt:
   token:
