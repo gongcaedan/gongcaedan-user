@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
@@ -21,8 +22,9 @@ public class JwtUtil {
     private long refreshExpiration;
 
     public JwtUtil(@Value("${jwt.token.secret}") String secret) {
-        secretKey = new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8)
-                , Jwts.SIG.HS256.key().build().getAlgorithm());
+        byte[] keyBytes = Base64.getDecoder().decode(secret);  // Base64 decode 추가
+        secretKey = new SecretKeySpec(keyBytes,
+                Jwts.SIG.HS256.key().build().getAlgorithm());
     }
 
     public String getEmail(String token){
@@ -41,16 +43,14 @@ public class JwtUtil {
     }
 
     public String createToken(String email, String role, String category){
-
-        long exp;
-        if(category.equals("access")) exp = accessExpiration;
-        else if(category.equals("refresh")) exp = refreshExpiration;
+        long exp = category.equals("access") ? accessExpiration : refreshExpiration;
 
         return Jwts.builder()
-                .claim("email",email)
-                .claim("role",role)
+                .claim("email", email)
+                .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + accessExpiration))
-                .signWith(secretKey).compact();
+                .expiration(new Date(System.currentTimeMillis() + exp))
+                .signWith(secretKey)
+                .compact();
     }
 }
